@@ -1,3 +1,12 @@
+/*
+*AUTORES:
+*Diego Rosales Peroza 
+*Laura Ruiz Mora 
+*Ángel Sanabria Suarez 
+*Martha Liliana Salazar Betancur 
+*Laura Vanessa Romero Jiménez 
+*/
+
 package entity;
 
 import java.awt.image.BufferedImage;
