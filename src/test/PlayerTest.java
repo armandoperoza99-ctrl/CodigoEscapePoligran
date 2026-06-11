@@ -24,8 +24,8 @@ public class PlayerTest {
 
         Player player = gp.player;
 
-        assertEquals(100, player.x);
-        assertEquals(100, player.y);
+        assertEquals(100, player.worldX);
+        assertEquals(100, player.worldY);
         assertEquals(4, player.speed);
         assertEquals("down", player.direction);
     }
@@ -36,7 +36,7 @@ public class PlayerTest {
     public void testMovimientoArriba() {
     	
     	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.y;
+    	int posicionInicial = gp.player.worldY;
     	
     	gp.getKeyH().upPressed = true;
     	
@@ -44,7 +44,7 @@ public class PlayerTest {
     	
     	assertEquals(
     			posicionInicial - gp.player.speed,
-    			gp.player.y
+    			gp.player.worldY
     			);
     	
     }
@@ -55,7 +55,7 @@ public class PlayerTest {
     public void testMovimientoAbajo() {
     	
     	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.y;
+    	int posicionInicial = gp.player.worldY;
     	
     	gp.getKeyH().downPressed = true;
     	
@@ -63,7 +63,7 @@ public class PlayerTest {
     	
     	assertEquals(
     			posicionInicial + gp.player.speed,
-    			gp.player.y
+    			gp.player.worldY
     			);
     	
     }
@@ -73,7 +73,7 @@ public class PlayerTest {
     public void testMovimientoIzquierda() {
     	
     	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.x;
+    	int posicionInicial = gp.player.worldX;
     	
     	gp.getKeyH().leftPressed = true;
     	
@@ -81,7 +81,7 @@ public class PlayerTest {
     	
     	assertEquals(
     			posicionInicial - gp.player.speed,
-    			gp.player.x
+    			gp.player.worldX
     			);
     	
     }
@@ -91,7 +91,7 @@ public class PlayerTest {
     public void testMovimientoDerecha() {
     	
     	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.x;
+    	int posicionInicial = gp.player.worldX;
     	
     	gp.getKeyH().rightPressed = true;
     	
@@ -99,7 +99,7 @@ public class PlayerTest {
     	
     	assertEquals(
     			posicionInicial + gp.player.speed,
-    			gp.player.x
+    			gp.player.worldX
     			);
     	
     }
