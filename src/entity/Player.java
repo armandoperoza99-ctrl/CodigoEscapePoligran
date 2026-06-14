@@ -35,7 +35,7 @@ public class Player extends Entity{ //configuraciones del jugador
 		screenY = gp.tileSize * 1;
 		
 		//Acá establecemos el area de colison del jugados
-		solidArea = new Rectangle(16, 16, 40 , 40);
+		solidArea = new Rectangle(30, 30, 36 , 36);
 		
 		setDefaultValues();
 		getPlayerImage();

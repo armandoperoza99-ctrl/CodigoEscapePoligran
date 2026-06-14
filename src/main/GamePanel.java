@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import javax.swing.plaf.DimensionUIResource;
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -46,8 +47,10 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
-    
+    public AssetSetter aSetter = new AssetSetter(this);
     public Player player = new Player(this,keyH);
+    public SuperObject obj[] = new SuperObject[20];
+    
     
     public GamePanel(){
 
@@ -58,6 +61,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true); // con esto, este panel de juego se va a enfocar en recibir las respuesta
     }
     
+    public void setupGame () {
+    	
+    	aSetter.setObject();
+    }
 	public void startGameThread(){
 
         gameThread = new Thread(this);
@@ -111,8 +118,17 @@ public class GamePanel extends JPanel implements Runnable{
 
     Graphics2D g2 = (Graphics2D)g;
     
+    //tile
     tileM.draw(g2);
-
+    
+    //object
+    for(int i = 0; i < obj.length; i++) {
+    	if(obj[i] != null) {
+    		obj[i].draw(g2, this);
+    	}
+    }
+    
+    //player
     player.draw(g2);
 
     g2.dispose();

@@ -30,7 +30,7 @@ public class TileManager {
 		
 		this.gp = gp;
 		
-		tile = new Tile[10];
+		tile = new Tile[20];
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		
 		getTileImage();
@@ -58,6 +58,26 @@ public class TileManager {
 			tile[4] = new Tile();
 			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/puerta.png"));
 			tile[4].collision = true;
+			
+			tile[5] = new Tile();
+			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/ascensor_p_5.png"));
+			tile[5].collision = true;
+			
+			tile[6] = new Tile();
+			tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/ascensor_p_4.png"));
+			tile[6].collision = true;
+			
+			tile[7] = new Tile();
+			tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/ascensor_p_3.png"));
+			tile[7].collision = true;
+			
+			tile[8] = new Tile();
+			tile[8].image = ImageIO.read(getClass().getResourceAsStream("/tiles/ascensor_p_2.png"));
+			tile[8].collision = true;
+			
+			tile[9] = new Tile();
+			tile[9].image = ImageIO.read(getClass().getResourceAsStream("/tiles/ascensor_p_1.png"));
+			tile[9].collision = true;
 
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -114,17 +134,17 @@ public class TileManager {
 			int worldX = worldCol * gp.tileSize;
 			int worldY = worldRow * gp.tileSize;
 			int screenX = worldX - gp.player.worldX + gp.player.screenX;
-			int screenY = worldY - gp.player.worldY + gp.player.screenY;
+			int screenY = worldY - gp.player.worldY + gp.player.screenY; 
 			
 			g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 			worldCol++;
 			
-			
+		
 			if(worldCol == gp.maxScreenCol) {
 				worldCol = 0;
 				worldRow++;
-				
-			}
+			}	
+			
 		}
 				
 
