@@ -10,7 +10,7 @@ public class OBJ_Pizarra extends SuperObject {
 		
 		name = "OBJ_Pizarra";
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/OBJ_Pizarra.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/objects/pizarra.png"));
 			
 		}catch(IOException e) {
 			e.printStackTrace();
