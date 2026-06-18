@@ -32,8 +32,8 @@ public class GamePanelTest {
 		
 		GamePanel gp = new GamePanel();
 		
-		assertEquals(768, gp.screenWidth);    // Validación del ancho configurado
-		assertEquals(576, gp.screenHeight);   // Validación del alto configurado
+		assertEquals(1536, gp.screenWidth);    // Validación del ancho configurado
+		assertEquals(1152, gp.screenHeight);   // Validación del alto configurado
 	}
 	
 	
