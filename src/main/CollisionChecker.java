@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import java.awt.Rectangle;
 
 public class CollisionChecker {
 	
@@ -58,12 +59,65 @@ public class CollisionChecker {
 			}
 			break;
 		}
-		
-		
-		
-		
-		
-		
+	}
+	
+	public int checkObject(Entity entity, boolean isPlayer) {
+		int index = -1;
+		for (int i = 0; i < gp.obj.length; i++) {
+			if (gp.obj[i] != null) {
+
+				Rectangle objRect = new Rectangle(
+						gp.obj[i].worldX + gp.obj[i].solidArea.x,
+						gp.obj[i].worldY + gp.obj[i].solidArea.y,
+						gp.obj[i].solidArea.width,
+						gp.obj[i].solidArea.height);
+
+				int nextWorldX = entity.worldX;
+				int nextWorldY = entity.worldY;
+
+				switch (entity.direction) {
+				case "up":
+				    nextWorldY -= entity.speed;
+				    break;
+
+				case "down":
+				    nextWorldY += entity.speed;
+				    break;
+
+				case "left":
+				    nextWorldX -= entity.speed;
+				    break;
+
+				case "right":
+				    nextWorldX += entity.speed;
+				    break;
+				}
+
+				Rectangle nextRect = new Rectangle(
+						nextWorldX + entity.solidArea.x,
+						nextWorldY + entity.solidArea.y,
+						entity.solidArea.width,
+						entity.solidArea.height);
+				
+				Rectangle currentRect = new Rectangle(
+				        entity.worldX + entity.solidArea.x,
+				        entity.worldY + entity.solidArea.y,
+				        entity.solidArea.width,
+				        entity.solidArea.height);
+
+				if (currentRect.intersects(objRect) || nextRect.intersects(objRect)) {
+
+				    if (gp.obj[i].collision) {
+				        entity.collisionOn = true;
+				    }
+
+				    if (isPlayer) {
+				        index = i;
+				    }
+				}
+			}
+		}
+		return index;
 	}
 
 }

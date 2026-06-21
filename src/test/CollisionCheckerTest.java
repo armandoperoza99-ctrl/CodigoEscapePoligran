@@ -10,9 +10,9 @@
 
 package test;
 
+import main.GamePanel;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import main.GamePanel;
 
 
 class CollisionCheckerTest {

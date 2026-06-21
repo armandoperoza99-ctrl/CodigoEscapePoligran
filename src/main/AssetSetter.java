@@ -79,7 +79,11 @@ public class AssetSetter {
 		
 		//Puerta Quiz piso 5
 		
-		gp.obj[12] = new OBJ_Salida_Quiz();
+		gp.obj[12] = new OBJ_Salida_Quiz(new Quiz(
+				"¿Qué hace un void en Java?",
+				new String[]{"Devuelve un valor", "No devuelve ningún valor", "Crea una clase", "Borra una variable"},
+				1
+		));
 		gp.obj[12].worldX = 12 * gp.tileSize;
 		gp.obj[12].worldY = 2 * gp.tileSize;
 		
@@ -128,7 +132,11 @@ public class AssetSetter {
 		
 		//Puerta Quiz piso 4
 		
-		gp.obj[26] = new OBJ_Salida_Quiz();
+		gp.obj[26] = new OBJ_Salida_Quiz(new Quiz(
+				"¿Qué palabra clave se usa para heredar de una clase en Java?",
+				new String[]{"implements", "extends", "inherits", "super"},
+				1
+		));
 		gp.obj[26].worldX = 3 * gp.tileSize;
 		gp.obj[26].worldY = 4 * gp.tileSize;
 			
@@ -169,7 +177,11 @@ public class AssetSetter {
 		
 		//Puerta Quiz piso 3
 		
-		gp.obj[37] = new OBJ_Salida_Quiz();
+		gp.obj[37] = new OBJ_Salida_Quiz(new Quiz(
+				"¿Cuál de estos es un tipo de dato primitivo en Java?",
+				new String[]{"String", "int", "ArrayList", "Object"},
+				1
+		));
 		gp.obj[37].worldX = 12 * gp.tileSize;
 		gp.obj[37].worldY = 6 * gp.tileSize;
 		
@@ -194,7 +206,11 @@ public class AssetSetter {
 		
 		//Puerta Quiz piso 2d
 		
-		gp.obj[42] = new OBJ_Salida_Quiz();
+		gp.obj[42] = new OBJ_Salida_Quiz(new Quiz(
+				"¿Qué significa POO?",
+				new String[]{"Programación Orientada a Objetos", "Proceso de Optimización Online", "Patrón de Objetos", "Programa de Orden Ordenado"},
+				0
+		));
 		gp.obj[42].worldX = 3 * gp.tileSize;
 		gp.obj[42].worldY = 8 * gp.tileSize;
 		

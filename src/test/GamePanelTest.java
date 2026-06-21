@@ -9,9 +9,9 @@
 
 package test;
 
+import main.GamePanel;     // Uso de la clase a testear
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import main.GamePanel;     // Uso de la clase a testear
 
 
 public class GamePanelTest {

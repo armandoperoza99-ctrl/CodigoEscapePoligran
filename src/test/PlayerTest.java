@@ -9,10 +9,10 @@
 
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 import entity.Player;      // Uso de la clase a testear
 import main.GamePanel;	   // Importar la clase principal del juego
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class PlayerTest {
 

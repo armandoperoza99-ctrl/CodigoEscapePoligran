@@ -9,6 +9,7 @@
 
 package entity;
 import java.awt.Graphics2D;
+
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,6 +18,9 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Salida_Quiz;
+
+import object.OBJ_entrada;
 
 public class Player extends Entity{ //configuraciones del jugador
 	
@@ -75,7 +79,7 @@ public class Player extends Entity{ //configuraciones del jugador
 	}
 	//movimientos al presionar la tecla
 	
-	public void update () {
+public void update () {
 		
 		if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true
 				|| keyH.rightPressed == true) {
@@ -96,9 +100,13 @@ public class Player extends Entity{ //configuraciones del jugador
 	        collisionOn = false;
 	        gp.cChecker.checkTile(this);
 	        
-	        // si la colision es falsa, el jugador se puede mover
+	        //check object collision (puertas, etc.)
+	        int objIndex = gp.cChecker.checkObject(this, true);
+	        reactToObject(objIndex);
 	        
-	        if(collisionOn == false) {
+	        // si la colision es falsa y no estamos en un quiz, el jugador se puede mover
+	        
+	        if(collisionOn == false && gp.gameState == gp.playState) {
 	        	
 	        	switch(direction) {
 	    		case "up":
@@ -116,10 +124,9 @@ public class Player extends Entity{ //configuraciones del jugador
 	        }
 	        }
 	        spriteCounter++;
-	        if (spriteCounter > 18) { //mientras mas alto el numero mas lento es
+	        if (spriteCounter > 18) {
 	        	if (spriteNum == 1) {
 	        		spriteNum = 2;
-	        		
 	        	}
 	        	else if (spriteNum == 2) {
 	        		spriteNum = 1;
@@ -127,7 +134,49 @@ public class Player extends Entity{ //configuraciones del jugador
 	        	spriteCounter = 0;
 	        }				
 		}
-}
+		
+		Rectangle playerRect = new Rectangle(
+		        worldX + solidArea.x,
+		        worldY + solidArea.y,
+		        solidArea.width,
+		        solidArea.height);
+		
+		Rectangle exitRect = new Rectangle(
+		        3 * gp.tileSize,
+		        10 * gp.tileSize,
+		        7 * gp.tileSize,
+		        gp.tileSize);
+		
+		if (playerRect.intersects(exitRect)) {
+		    gp.gameState = gp.winState;
+		}
+	}
+	
+	private void reactToObject(int index) {
+		if (index == -1) return;
+	
+		if (gp.obj[index] instanceof OBJ_Salida_Quiz) {
+			OBJ_Salida_Quiz door = (OBJ_Salida_Quiz) gp.obj[index];
+			if (gp.gameState == gp.playState && !door.answered) {
+				gp.gameState = gp.quizState;
+				gp.ui.startQuiz(door.quiz, index);
+			}
+		}
+		// anterior
+//		else if (gp.obj[index] instanceof OBJ_entrada) {
+//			if (gp.gameState == gp.playState) {
+//				gp.gameState = gp.winState;
+//			}
+//		}
+		else if (gp.obj[index] instanceof OBJ_entrada) {
+
+		    gp.gameState = gp.winState;
+
+		    gp.ui.currentQuiz = null;
+		    gp.ui.currentDoorIndex = null;
+		}
+	}
+	
 	public void draw(Graphics2D g2) {
 		
 	//	g2.setColor(Color.white); YA SE USÓ

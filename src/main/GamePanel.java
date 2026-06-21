@@ -10,13 +10,17 @@
 package main;
 
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 import javax.swing.plaf.DimensionUIResource;
+
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
+import object.OBJ_Salida_Quiz;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -42,9 +46,17 @@ public class GamePanel extends JPanel implements Runnable{
     
   //FPS
     int FPS = 60;
+    public final int playState = 1;
+    public final int quizState = 2;
+    public final int winState = 3;
+    public final int loseState = 4;
+    public final double maxTime = 120;
+    public double remainingTime = maxTime;
+    public int gameState = playState;
+    public UI ui = new UI(this);
     
     public TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -105,12 +117,42 @@ public class GamePanel extends JPanel implements Runnable{
     
 
 
-	public void update() {
-		
-		player.update();
+    public void update() {
+        if (gameState == playState) {
+            player.update();
+        }
 
+        if (gameState == playState || gameState == quizState) {
 
+            remainingTime -= 1.0 / FPS;
+
+            if (remainingTime <= 0) {
+                remainingTime = 0;
+                gameState = loseState;
+
+                ui.currentQuiz = null;
+                ui.currentDoorIndex = null;
+            }
+        }
+
+        ui.update();
     }
+	
+	public void resetGame() {
+		gameState = playState;
+		remainingTime = maxTime;
+		player.setDefaultValues();
+		for (int i = 0; i < obj.length; i++) {
+			if (obj[i] instanceof OBJ_Salida_Quiz) {
+				OBJ_Salida_Quiz door = (OBJ_Salida_Quiz) obj[i];
+				door.answered = false;
+				door.collision = true;
+			}
+		}
+		ui.currentQuiz = null;
+		ui.currentDoorIndex = null;
+		ui.feedbackMessage = "";
+	}
     
     public void paintComponent(Graphics g){
 
@@ -131,6 +173,7 @@ public class GamePanel extends JPanel implements Runnable{
     //player
     player.draw(g2);
 
+    ui.draw(g2);
     g2.dispose();
 
 }
