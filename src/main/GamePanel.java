@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable{
     
     
   //FPS
-    int FPS = 60;
+    public int FPS = 60;
     public final int playState = 1;
     public final int quizState = 2;
     public final int winState = 3;
@@ -56,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable{
     public UI ui = new UI(this);
     
     public TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler(this);
+    public KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);

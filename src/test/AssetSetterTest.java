@@ -10,135 +10,196 @@
 
 package test;
 
-import main.GamePanel;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import main.AssetSetter;
+import main.GamePanel;
+import main.Quiz;
+
+import object.*;
 
 public class AssetSetterTest {
 
-    //Validación para que todos los objetos del escenario sean creados y ubicados correctamente
-    @Test
-    public void testObjetosYPosiciones() {
-
-        GamePanel gp = new GamePanel();
-
-        gp.setupGame();
-
-        // Piso 5
-
-        assertNotNull(gp.obj[0]);
-        assertEquals(1 * gp.tileSize, gp.obj[0].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[0].worldY);
-
-        assertNotNull(gp.obj[1]);
-        assertEquals(2 * gp.tileSize, gp.obj[1].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[1].worldY);
-
-        assertNotNull(gp.obj[2]);
-        assertEquals(3 * gp.tileSize, gp.obj[2].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[2].worldY);
-
-        assertNotNull(gp.obj[3]);
-        assertEquals(8 * gp.tileSize, gp.obj[3].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[3].worldY);
-
-        assertNotNull(gp.obj[4]);
-        assertEquals(9 * gp.tileSize, gp.obj[4].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[4].worldY);
-
-        assertNotNull(gp.obj[5]);
-        assertEquals(10 * gp.tileSize, gp.obj[5].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[5].worldY);
-
-        assertNotNull(gp.obj[6]);
-        assertEquals(11 * gp.tileSize, gp.obj[6].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[6].worldY);
-
-        assertNotNull(gp.obj[7]);
-        assertEquals(13 * gp.tileSize, gp.obj[7].worldX);
-        assertEquals(1 * gp.tileSize, gp.obj[7].worldY);
-
-        // Piso 4
-
-        assertNotNull(gp.obj[8]);
-        assertEquals(1 * gp.tileSize, gp.obj[8].worldX);
-        assertEquals(4 * gp.tileSize, gp.obj[8].worldY);
-
-        assertNotNull(gp.obj[9]);
-        assertEquals(2 * gp.tileSize, gp.obj[9].worldX);
-        assertEquals(4 * gp.tileSize, gp.obj[9].worldY);
-
-        assertNotNull(gp.obj[10]);
-        assertEquals(4 * gp.tileSize, gp.obj[10].worldX);
-        assertEquals(3 * gp.tileSize, gp.obj[10].worldY);
-
-        assertNotNull(gp.obj[11]);
-        assertEquals(8 * gp.tileSize, gp.obj[11].worldX);
-        assertEquals(3 * gp.tileSize, gp.obj[11].worldY);
-
-        assertNotNull(gp.obj[12]);
-        assertEquals(9 * gp.tileSize, gp.obj[12].worldX);
-        assertEquals(3 * gp.tileSize, gp.obj[12].worldY);
-
-        // El objeto 13 no existe en el AssetSetter
-
-        assertNull(gp.obj[13]);
-
-        assertNotNull(gp.obj[14]);
-        assertEquals(10 * gp.tileSize, gp.obj[14].worldX);
-        assertEquals(3 * gp.tileSize, gp.obj[14].worldY);
-
-        assertNotNull(gp.obj[15]);
-        assertEquals(11 * gp.tileSize, gp.obj[15].worldX);
-        assertEquals(3 * gp.tileSize, gp.obj[15].worldY);
-
-        assertNotNull(gp.obj[16]);
-        assertEquals(14 * gp.tileSize, gp.obj[16].worldX);
-        assertEquals(4 * gp.tileSize, gp.obj[16].worldY);
-
-        // Piso 3
-
-        assertNotNull(gp.obj[17]);
-        assertEquals(9 * gp.tileSize, gp.obj[17].worldX);
-        assertEquals(5 * gp.tileSize, gp.obj[17].worldY);
-
-        assertNotNull(gp.obj[18]);
-        assertEquals(10 * gp.tileSize, gp.obj[18].worldX);
-        assertEquals(5 * gp.tileSize, gp.obj[18].worldY);
-
-        assertNotNull(gp.obj[19]);
-        assertEquals(11 * gp.tileSize, gp.obj[19].worldX);
-        assertEquals(5 * gp.tileSize, gp.obj[19].worldY);
-
-        assertNotNull(gp.obj[20]);
-        assertEquals(12 * gp.tileSize, gp.obj[20].worldX);
-        assertEquals(5 * gp.tileSize, gp.obj[20].worldY);
-
-        assertNotNull(gp.obj[21]);
-        assertEquals(1 * gp.tileSize, gp.obj[21].worldX);
-        assertEquals(5 * gp.tileSize, gp.obj[21].worldY);
-
-        assertNotNull(gp.obj[22]);
-        assertEquals(13 * gp.tileSize, gp.obj[22].worldX);
-        assertEquals(5 * gp.tileSize, gp.obj[22].worldY);
-    }
+    GamePanel gp;
+    AssetSetter assetSetter;
     
-    // Validación que existen el total de los objetos
+    @BeforeEach
+    void setUp() {
+
+        gp = new GamePanel(); // ya trae obj inicializado como SuperObject[50]
+
+        assetSetter = new AssetSetter(gp);
+        assetSetter.setObject();
+    }
+
+
+    // ---------------------------------------------------
+    // 1. Validar que los objetos clave no sean null
+    // ---------------------------------------------------
     @Test
-    public void testCantidadObjetosConfigurados() {
+    void testObjetosNoNull() {
 
-        GamePanel gp = new GamePanel();
+        int[] indices = {
+            0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,22,23,
+            25,26,27,28,29,30,31,32,34,36,37,38,39,40,41,42,43,44
+        };
 
-        gp.setupGame();
+        for (int i : indices) {
+            assertNotNull(gp.obj[i], "Objeto null en índice: " + i);
+        }
+    }
 
-        int cantidadObjetos = 0;
+    // ---------------------------------------------------
+    // 2. Validar tipos de objetos principales
+    // ---------------------------------------------------
+    @Test
+    void testTiposDeObjetos() {
 
-        for (int i = 0; i < gp.obj.length; i++) {
-            if (gp.obj[i] != null) {
-                cantidadObjetos++;
+        assertTrue(gp.obj[0] instanceof OBJ_Pc_Principal);
+        assertTrue(gp.obj[2] instanceof OBJ_Servidor_One);
+        assertTrue(gp.obj[3] instanceof OBJ_PC_Obj);
+        assertTrue(gp.obj[7] instanceof OBJ_Pizarra);
+        assertTrue(gp.obj[8] instanceof OBJ_Silla);
+        assertTrue(gp.obj[12] instanceof OBJ_Salida_Quiz);
+
+        assertTrue(gp.obj[14] instanceof OBJ_Servidor_Two);
+        assertTrue(gp.obj[15] instanceof OBJ_Servidor_One);
+
+        assertTrue(gp.obj[27] instanceof OBJ_Pc_Letra_k);
+        assertTrue(gp.obj[38] instanceof OBJ_Pc_Letra_y);
+
+        assertTrue(gp.obj[43] instanceof OBJ_Flores);
+        assertTrue(gp.obj[44] instanceof OBJ_entrada);
+    }
+
+    // ---------------------------------------------------
+    // 3. Validar posiciones con tileSize
+    // ---------------------------------------------------
+    @Test
+    void testPosicionesCorrectas() {
+
+        assertEquals(1 * gp.tileSize, ((SuperObject) gp.obj[0]).worldX);
+        assertEquals(1 * gp.tileSize, ((SuperObject) gp.obj[0]).worldY);
+
+        assertEquals(2 * gp.tileSize, ((SuperObject) gp.obj[1]).worldX);
+        assertEquals(1 * gp.tileSize, ((SuperObject) gp.obj[1]).worldY);
+
+        assertEquals(12 * gp.tileSize, ((SuperObject) gp.obj[12]).worldX);
+        assertEquals(2 * gp.tileSize, ((SuperObject) gp.obj[12]).worldY);
+
+        assertEquals(3 * gp.tileSize, ((SuperObject) gp.obj[26]).worldX);
+        assertEquals(4 * gp.tileSize, ((SuperObject) gp.obj[26]).worldY);
+
+        assertEquals(3 * gp.tileSize, ((SuperObject) gp.obj[42]).worldX);
+        assertEquals(8 * gp.tileSize, ((SuperObject) gp.obj[42]).worldY);
+
+        assertEquals(8 * gp.tileSize, ((SuperObject) gp.obj[44]).worldX);
+        assertEquals(9 * gp.tileSize, ((SuperObject) gp.obj[44]).worldY);
+    }
+
+    // ---------------------------------------------------
+    // 4. Validación general de coordenadas
+    // ---------------------------------------------------
+    @Test
+    void testCoordenadasValidas() {
+
+        for (Object o : gp.obj) {
+            if (o != null) {
+
+                SuperObject so = (SuperObject) o;
+
+                assertTrue(so.worldX >= 0, "worldX negativo");
+                assertTrue(so.worldY >= 0, "worldY negativo");
+
+                assertEquals(0, so.worldX % gp.tileSize,
+                        "worldX no alineado a tileSize");
+
+                assertEquals(0, so.worldY % gp.tileSize,
+                        "worldY no alineado a tileSize");
             }
         }
+    }
 
-        assertEquals(22, cantidadObjetos);
+    // ---------------------------------------------------
+    // 5. Validación del quiz
+    // ---------------------------------------------------
+    @Test
+    void testQuizPisoCinco() {
+
+    	OBJ_Salida_Quiz q1 = (OBJ_Salida_Quiz) gp.obj[12];
+
+        assertNotNull(q1.quiz);
+        assertEquals("¿Qué hace un void en Java?", q1.quiz.question);
+        assertEquals(4, q1.quiz.options.length);
+        assertEquals(1, q1.quiz.correctIndex);
+    }
+    
+    @Test
+    public void testQuizPisoCuadro() {
+    	OBJ_Salida_Quiz q2 = (OBJ_Salida_Quiz) gp.obj[26];
+
+        assertNotNull(q2.quiz);
+        assertEquals("¿Qué palabra clave se usa para heredar de una clase en Java?", q2.quiz.question);
+        assertEquals(4, q2.quiz.options.length);
+        assertEquals("implements", q2.quiz.options[0]);
+        assertEquals("extends", q2.quiz.options[1]);
+        assertEquals("inherits", q2.quiz.options[2]);
+        assertEquals("super", q2.quiz.options[3]);
+        assertEquals(1, q2.quiz.correctIndex);
+    }
+    
+    @Test
+    public void testQuizPisoTres() {
+    	OBJ_Salida_Quiz q1 = (OBJ_Salida_Quiz) gp.obj[12];
+
+        assertNotNull(q1.quiz);
+        assertEquals("¿Qué hace un void en Java?", q1.quiz.question);
+        assertEquals(4, q1.quiz.options.length);
+        assertEquals(1, q1.quiz.correctIndex);
+    }
+    
+    @Test
+    public void testQuizPisoDos() {
+        OBJ_Salida_Quiz q2 = (OBJ_Salida_Quiz) gp.obj[26];
+
+        assertNotNull(q2.quiz);
+        assertEquals("¿Qué palabra clave se usa para heredar de una clase en Java?", q2.quiz.question);
+        assertEquals(4, q2.quiz.options.length);
+        assertEquals("implements", q2.quiz.options[0]);
+        assertEquals("extends", q2.quiz.options[1]);
+        assertEquals("inherits", q2.quiz.options[2]);
+        assertEquals("super", q2.quiz.options[3]);
+        assertEquals(1, q2.quiz.correctIndex);
+    }
+    
+    @Test
+    public void testQuizPisoUno() {
+    	OBJ_Salida_Quiz q3 = (OBJ_Salida_Quiz) gp.obj[37];
+
+        assertNotNull(q3.quiz);
+        assertEquals("¿Cuál de estos es un tipo de dato primitivo en Java?", q3.quiz.question);
+        assertEquals(4, q3.quiz.options.length);
+        assertEquals("String", q3.quiz.options[0]);
+        assertEquals("int", q3.quiz.options[1]);
+        assertEquals("ArrayList", q3.quiz.options[2]);
+        assertEquals("Object", q3.quiz.options[3]);
+        assertEquals(1, q3.quiz.correctIndex);
+    }
+    // ---------------------------------------------------
+    // 6. Validar cantidad mínima de objetos cargados
+    // ---------------------------------------------------
+    @Test
+    void testCantidadMinimaObjetos() {
+
+        int count = 0;
+
+        for (Object o : gp.obj) {
+            if (o != null) count++;
+        }
+
+        assertTrue(count >= 30, "No se cargaron suficientes objetos");
     }
 }

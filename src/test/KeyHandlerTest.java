@@ -9,173 +9,214 @@
 
 package test;
 
-import java.awt.Canvas;           // Simulación del componente gráfico para el origen del evento
-import java.awt.event.KeyEvent;   // Simulación de los eventos del teclado
-
-import main.KeyHandler;           // Uso de la clase a testear
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.Canvas;
+import java.awt.event.KeyEvent;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.GamePanel;
-
-/*
- * Test para validar las acciones de las teclas. 
- * CP01 : Validar que al presionar cada uno de los comandos, se ejecute la acción esperada.
- * CP02 : Validar que al soltar las teclas, se detenga la acción.
- */
+import main.KeyHandler;
 
 public class KeyHandlerTest {
 
-	@Test   // Validación de la acción de la tecla W al ser presionada
-	public void testPresionarW() {
+    GamePanel gp;
+    KeyHandler kh;
 
-        KeyHandler kh = new KeyHandler(new GamePanel());
+    @BeforeEach
+    void setUp() {
+        gp = new GamePanel();
+        kh = new KeyHandler(gp);
+    }
 
-        KeyEvent evento = new KeyEvent(
-                new Canvas(),
-                KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(),
-                0,
-                KeyEvent.VK_W,
-                'W'
-        );
-        
-        kh.keyPressed(evento);
-        
+    // ---------------------------------------------------
+    // 1. Validación del movimiento
+    // ---------------------------------------------------
+
+    @Test
+    void testPresionarW() {
+
+        gp.gameState = gp.playState;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_W, 'W');
+
+        kh.keyPressed(e);
+
         assertTrue(kh.upPressed);
-	}
-	
-	@Test   // Validación de la tecla W al ser soltadas
-	public void testSoltarW() {
-		
-		KeyHandler kh = new KeyHandler(new GamePanel());
-		kh.upPressed = true;
-		KeyEvent evento = new KeyEvent(
-				new Canvas(),
-				KeyEvent.KEY_RELEASED,
-				System.currentTimeMillis(),
-				0,
-				KeyEvent.VK_W,
-				'W'
-				);
-		
-		kh.keyReleased(evento);
-		
-		assertFalse(kh.upPressed);
-	}
-	
-	@Test    // Validación de la acción de la tecla A al ser presionada
-	public void testPresionarA() {
+    }
 
-        KeyHandler kh = new KeyHandler(new GamePanel());
+    @Test
+    void testPresionarA() {
 
-        KeyEvent evento = new KeyEvent(
-                new Canvas(),
-                KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(),
-                0,
-                KeyEvent.VK_A,
-                'A'
-        );
-        
-        kh.keyPressed(evento);
-        
+        gp.gameState = gp.playState;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_A, 'A');
+
+        kh.keyPressed(e);
+
         assertTrue(kh.leftPressed);
-	}
-	
-	@Test    // Validación de la tecla A al ser soltadas
-	public void testSoltarA() {
-		
-		KeyHandler kh = new KeyHandler(new GamePanel());
-		kh.upPressed = true;
-		KeyEvent evento = new KeyEvent(
-				new Canvas(),
-				KeyEvent.KEY_RELEASED,
-				System.currentTimeMillis(),
-				0,
-				KeyEvent.VK_A,
-				'A'
-				);
-		
-		kh.keyReleased(evento);
-		
-		assertFalse(kh.leftPressed);
-	}
-	
-	@Test    // Validación de la acción de la tecla S al ser presionada
-	public void testPresionarS() {
+    }
 
-        KeyHandler kh = new KeyHandler(new GamePanel());
+    @Test
+    void testPresionarS() {
 
-        KeyEvent evento = new KeyEvent(
-                new Canvas(),
-                KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(),
-                0,
-                KeyEvent.VK_S,
-                'S'
-        );
-        
-        kh.keyPressed(evento);
-        
+        gp.gameState = gp.playState;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_S, 'S');
+
+        kh.keyPressed(e);
+
         assertTrue(kh.downPressed);
-	}
-	
-	@Test    // Validación de la tecla S al ser soltadas
-	public void testSoltarS() {
-		
-		KeyHandler kh = new KeyHandler(new GamePanel());
-		kh.upPressed = true;
-		KeyEvent evento = new KeyEvent(
-				new Canvas(),
-				KeyEvent.KEY_RELEASED,
-				System.currentTimeMillis(),
-				0,
-				KeyEvent.VK_S,
-				'S'
-				);
-		
-		kh.keyReleased(evento);
-		
-		assertFalse(kh.downPressed);
-	}
-	
-	@Test      // Validación de la acción de la tecla D al ser presionada
-	public void testPresionarD() {
+    }
 
-        KeyHandler kh = new KeyHandler(new GamePanel());
+    @Test
+    void testPresionarD() {
 
-        KeyEvent evento = new KeyEvent(
-                new Canvas(),
-                KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(),
-                0,
-                KeyEvent.VK_D,
-                'D'
-        );
-        
-        kh.keyPressed(evento);
-        
+        gp.gameState = gp.playState;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_D, 'D');
+
+        kh.keyPressed(e);
+
         assertTrue(kh.rightPressed);
-	}
-	
-	@Test     // Validación de la tecla D al ser soltadas
-	public void testSoltarD() {
-		
-		KeyHandler kh = new KeyHandler(new GamePanel());
-		kh.upPressed = true;
-		KeyEvent evento = new KeyEvent(
-				new Canvas(),
-				KeyEvent.KEY_RELEASED,
-				System.currentTimeMillis(),
-				0,
-				KeyEvent.VK_D,
-				'D'
-				);
-		
-		kh.keyReleased(evento);
-		
-		assertFalse(kh.rightPressed);
-	}
+    }
 
+    // ---------------------------------------------------
+    // 2. Validación soltar las teclas
+    // ---------------------------------------------------
+
+    @Test
+    void testSoltarW() {
+
+        kh.upPressed = true;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_RELEASED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_W, 'W');
+
+        kh.keyReleased(e);
+
+        assertFalse(kh.upPressed);
+    }
+
+    @Test
+    void testSoltarA() {
+
+        kh.leftPressed = true;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_RELEASED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_A, 'A');
+
+        kh.keyReleased(e);
+
+        assertFalse(kh.leftPressed);
+    }
+
+    @Test
+    void testSoltarS() {
+
+        kh.downPressed = true;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_RELEASED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_S, 'S');
+
+        kh.keyReleased(e);
+
+        assertFalse(kh.downPressed);
+    }
+
+    @Test
+    void testSoltarD() {
+
+        kh.rightPressed = true;
+
+        KeyEvent e = new KeyEvent(new Canvas(), KeyEvent.KEY_RELEASED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_D, 'D');
+
+        kh.keyReleased(e);
+
+        assertFalse(kh.rightPressed);
+    }
+
+    // ----------------------------------------------------------
+    // 3. Validación teclas para el quiz (flechas y enter/space)
+    // ----------------------------------------------------------
+
+    @Test
+    void testQuizUpDownEnterSpace() {
+
+        gp.gameState = gp.quizState;
+
+        KeyEvent up = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_W, 'W');
+
+        KeyEvent down = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_S, 'S');
+
+        KeyEvent enter = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_ENTER, '\n');
+
+        KeyEvent space = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_SPACE, ' ');
+
+        assertDoesNotThrow(() -> kh.keyPressed(up));
+        assertDoesNotThrow(() -> kh.keyPressed(down));
+        assertDoesNotThrow(() -> kh.keyPressed(enter));
+        assertDoesNotThrow(() -> kh.keyPressed(space));
+    }
+
+    // -------------------------------------------------------------------
+    // 4. Validación victoria / gameover (Presionar Enter para reiniciar)
+    // -------------------------------------------------------------------
+
+    @Test
+    void testResetWinState() {
+
+        gp.gameState = gp.winState;
+
+        KeyEvent enter = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_ENTER, '\n');
+
+        kh.keyPressed(enter);
+
+        assertDoesNotThrow(() -> gp.resetGame());
+    }
+
+    @Test
+    void testResetLoseState() {
+
+        gp.gameState = gp.loseState;
+
+        KeyEvent enter = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_ENTER, '\n');
+
+        kh.keyPressed(enter);
+
+        assertDoesNotThrow(() -> gp.resetGame());
+    }
+
+    // -----------------------------------------------------------
+    // 5. Validación presionar teclas que no tienen funcionalidad
+    // -----------------------------------------------------------
+
+    @Test
+    void testTeclaInvalidaNoAfecta() {
+
+        gp.gameState = gp.playState;
+
+        KeyEvent x = new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED,
+                System.currentTimeMillis(), 0, KeyEvent.VK_X, 'X');
+
+        kh.keyPressed(x);
+
+        assertFalse(kh.upPressed);
+        assertFalse(kh.downPressed);
+        assertFalse(kh.leftPressed);
+        assertFalse(kh.rightPressed);
+    }
 }

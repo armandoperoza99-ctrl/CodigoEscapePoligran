@@ -13,7 +13,7 @@ public class UI {
     public int selectedOption = 0;
     public Integer currentDoorIndex = null;
     public String feedbackMessage = "";
-    int feedbackTimer = 0;
+    public int feedbackTimer = 0;
 
     public UI(GamePanel gp) {
         this.gp = gp;

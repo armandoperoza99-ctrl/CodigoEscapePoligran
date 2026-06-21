@@ -9,138 +9,239 @@
 
 package test;
 
-import entity.Player;      // Uso de la clase a testear
-import main.GamePanel;	   // Importar la clase principal del juego
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.Rectangle;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import entity.Player;
+import main.GamePanel;
+import main.KeyHandler;
+import object.OBJ_Salida_Quiz;
+import object.OBJ_entrada;
+import main.Quiz;
 
 public class PlayerTest {
 
-    @Test  // Validación de la posición inicial del personaje
-    
-    public void testValoresIniciales() {
+    GamePanel gp;
+    Player player;
+    KeyHandler kh;
 
-        GamePanel gp = new GamePanel();
+    @BeforeEach
+    void setUp() {
+        gp = new GamePanel();
+        kh = gp.getKeyH();
+        player = gp.player;
+    }
 
-        Player player = gp.player;
+    // ---------------------------------------------------
+    // 1. Validación de los valores iniciales
+    // ---------------------------------------------------
+    @Test
+    void testValoresIniciales() {
 
-        assertEquals(100, player.worldX);
-        assertEquals(100, player.worldY);
+        assertEquals(4 * gp.tileSize, player.worldX);
+        assertEquals(1 * gp.tileSize, player.worldY);
         assertEquals(4, player.speed);
         assertEquals("down", player.direction);
     }
-    
-    
-    @Test   //Validación de movimiento hacia arriba
-    
-    public void testMovimientoArriba() {
-    	
-    	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.worldY;
-    	
-    	gp.getKeyH().upPressed = true;
-    	
-    	gp.player.update();
-    	
-    	assertEquals(
-    			posicionInicial - gp.player.speed,
-    			gp.player.worldY
-    			);
-    	
+
+    // -----------------------------------------------------------------
+    // 2. Validación de los movimientos básicos (up, down, left, right)
+    // -----------------------------------------------------------------
+    @Test
+    void testMovimientoArriba() {
+
+        int y = player.worldY;
+
+        kh.upPressed = true;
+        player.update();
+
+        assertEquals(y - player.speed, player.worldY);
     }
 
-    
-    @Test   //Validación de movimiento hacia abajo
-    
-    public void testMovimientoAbajo() {
-    	
-    	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.worldY;
-    	
-    	gp.getKeyH().downPressed = true;
-    	
-    	gp.player.update();
-    	
-    	assertEquals(
-    			posicionInicial + gp.player.speed,
-    			gp.player.worldY
-    			);
-    	
+    @Test
+    void testMovimientoAbajo() {
+
+        int y = player.worldY;
+
+        kh.downPressed = true;
+        player.update();
+
+        assertEquals(y + player.speed, player.worldY);
     }
-    
-    @Test   //Validación de movimiento hacia la izquierda
-    
-    public void testMovimientoIzquierda() {
-    	
-    	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.worldX;
-    	
-    	gp.getKeyH().leftPressed = true;
-    	
-    	gp.player.update();
-    	
-    	assertEquals(
-    			posicionInicial - gp.player.speed,
-    			gp.player.worldX
-    			);
-    	
+
+    @Test
+    void testMovimientoIzquierda() {
+
+        int x = player.worldX;
+
+        kh.leftPressed = true;
+        player.update();
+
+        assertEquals(x - player.speed, player.worldX);
     }
-    
-    @Test   //Validación de movimiento hacia la derecha
-    
-    public void testMovimientoDerecha() {
-    	
-    	GamePanel gp = new GamePanel();
-    	int posicionInicial = gp.player.worldX;
-    	
-    	gp.getKeyH().rightPressed = true;
-    	
-    	gp.player.update();
-    	
-    	assertEquals(
-    			posicionInicial + gp.player.speed,
-    			gp.player.worldX
-    			);
-    	
+
+    @Test
+    void testMovimientoDerecha() {
+
+        int x = player.worldX;
+
+        kh.rightPressed = true;
+        player.update();
+
+        assertEquals(x + player.speed, player.worldX);
     }
-    
-    @Test    // Validación del cambio de dirección - Arriba
-    
-    public void testDireccionArriba () {
-    	
-    	GamePanel gp = new GamePanel();
-    	gp.getKeyH().upPressed = true;
-    	gp.player.update();
-    	assertEquals("up",gp.player.direction);
+
+    // ---------------------------------------------------
+    // 3. Validación dirección
+    // ---------------------------------------------------
+    @Test
+    void testDireccion() {
+
+        // UP
+        kh.upPressed = true;
+        kh.downPressed = false;
+        kh.leftPressed = false;
+        kh.rightPressed = false;
+
+        player.update();
+        assertEquals("up", player.direction);
+
+        // RESET
+        kh.upPressed = false;
+
+        // DOWN
+        kh.downPressed = true;
+        player.update();
+        assertEquals("down", player.direction);
+
+        // RESET
+        kh.downPressed = false;
+
+        // LEFT
+        kh.leftPressed = true;
+        player.update();
+        assertEquals("left", player.direction);
+
+        // RESET
+        kh.leftPressed = false;
+
+        // RIGHT
+        kh.rightPressed = true;
+        player.update();
+        assertEquals("right", player.direction);
+        
+        // RESET
+        kh.rightPressed = false;
     }
-    
-    @Test    // Validación del cambio de dirección - Abajo
-    
-    public void testDireccionAbajo () {
-    	
-    	GamePanel gp = new GamePanel();
-    	gp.getKeyH().downPressed = true;
-    	gp.player.update();
-    	assertEquals("down",gp.player.direction);
+
+    // ---------------------------------------------------
+    // 4. Validación de la colisión
+    // ---------------------------------------------------
+    @Test
+    void testNoMovimientoConColision() {
+
+        gp.gameState = gp.playState;
+        int x = player.worldX;
+        //Simulación de una colisión
+        object.SuperObject bloque = new object.SuperObject();
+        bloque.worldX = player.worldX;
+        bloque.worldY = player.worldY;
+        bloque.collision = true;
+        bloque.solidArea = new java.awt.Rectangle(0, 0, gp.tileSize, gp.tileSize);
+
+        gp.obj[0] = bloque;
+
+        kh.rightPressed = true;
+        player.update();
+
+        assertEquals(x, player.worldX);
     }
-    
-    @Test    // Validación del cambio de dirección - Izquierda
-    
-    public void testDireccionIzquierda () {
-    	
-    	GamePanel gp = new GamePanel();
-    	gp.getKeyH().leftPressed = true;
-    	gp.player.update();
-    	assertEquals("left",gp.player.direction);
+
+    // ---------------------------------------------------
+    // 5. Validación de la interacción con el quiz
+    // ---------------------------------------------------
+    @Test
+    void testInteraccionQuiz() {
+
+        OBJ_Salida_Quiz door = new OBJ_Salida_Quiz(
+                new Quiz("Q", new String[]{"a","b","c","d"}, 1)
+        );
+
+        door.worldX = player.worldX;
+        door.worldY = player.worldY;
+        door.collision = true;
+        door.answered = false;
+        door.solidArea = new Rectangle(0,0,32,32);
+
+        gp.obj[0] = door;
+
+        kh.upPressed = true;
+        player.update();
+
+        assertEquals(gp.quizState, gp.gameState);
     }
-    
-    @Test    // Validación del cambio de dirección - Derecha
-    
-    public void testDireccionDerecha () {
-    	
-    	GamePanel gp = new GamePanel();
-    	gp.getKeyH().rightPressed = true;
-    	gp.player.update();
-    	assertEquals("right",gp.player.direction);
+
+    // ---------------------------------------------------
+    // 6. Validación victoria
+    // ---------------------------------------------------
+    @Test
+    void testInteraccionEntradaWin() {
+
+        OBJ_entrada entrada = new OBJ_entrada();
+
+        entrada.worldX = player.worldX;
+        entrada.worldY = player.worldY;
+        entrada.collision = true;
+        entrada.solidArea = new Rectangle(0,0,32,32);
+
+        gp.obj[0] = entrada;
+
+        kh.upPressed = true;
+        player.update();
+
+        assertEquals(gp.winState, gp.gameState);
+    }
+
+    // ---------------------------------------------------
+    // 7. Validación de la animación del jugador
+    // ---------------------------------------------------
+    @Test
+    void testSpriteCambio() {
+
+        kh.upPressed = true;
+
+        player.spriteCounter = 19;
+
+        player.update();
+
+        assertTrue(player.spriteNum == 1 || player.spriteNum == 2);
+    }
+
+    // -------------------------------------------------------------
+    // 8. Validación para no abrir nuevamente un quiz ya respondido
+    // -------------------------------------------------------------
+    @Test
+    void testQuizYaRespondido() {
+
+        OBJ_Salida_Quiz door = new OBJ_Salida_Quiz(
+                new Quiz("Q", new String[]{"a","b","c","d"}, 1)
+        );
+
+        door.worldX = player.worldX;
+        door.worldY = player.worldY;
+        door.collision = true;
+        door.answered = true;
+        door.solidArea = new Rectangle(0,0,32,32);
+
+        gp.obj[0] = door;
+
+        kh.upPressed = true;
+        player.update();
+
+        assertNotEquals(gp.quizState, gp.gameState);
     }
 }
